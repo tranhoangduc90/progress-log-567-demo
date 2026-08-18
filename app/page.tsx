@@ -7,6 +7,14 @@ type TeacherPanel = "class" | "builder";
 
 const STEP_LABELS = ["Vào phiếu", "Entry", "Mini 1", "Mini 2", "Exit", "Tóm tắt"];
 
+const reflectionLibrary = [
+  { id: "result", stage: "Sau khi làm bài", format: "Số", question: "Em làm đúng bao nhiêu câu?" },
+  { id: "difficulty", stage: "Sau khi làm bài", format: "Chọn nhanh", question: "Em vướng nhất ở bước nào?" },
+  { id: "evidence", stage: "Sau khi làm bài", format: "Một câu", question: "Dấu hiệu nào khiến em chọn heading đó?" },
+  { id: "repair", stage: "Sau khi chữa bài", format: "Checklist", question: "Em đã sửa được bước nào khi làm lại?" },
+  { id: "question", stage: "Sau khi chữa bài", format: "Không bắt buộc", question: "Nếu vẫn cần hỗ trợ, em muốn hỏi gì?" },
+];
+
 const students = [
   { name: "Mai Anh", progress: "5/5", status: "Cần hỗ trợ", tone: "alert", detail: "FALSE ≠ NOT GIVEN" },
   { name: "Gia Huy", progress: "5/5", status: "Đã hoàn thành", tone: "good", detail: "Ổn định" },
@@ -30,6 +38,7 @@ export default function Home() {
   const [teacherPanel, setTeacherPanel] = useState<TeacherPanel>("class");
   const [teacherAction, setTeacherAction] = useState<string | null>(null);
   const [miniCount, setMiniCount] = useState(2);
+  const [selectedQuestions, setSelectedQuestions] = useState(["result", "difficulty", "evidence", "repair"]);
   const [showSourceNote, setShowSourceNote] = useState(false);
 
   const attendanceStatus = incompleteDemo ? "Cần giảng viên xác nhận" : "Đã xác nhận tham gia";
@@ -49,6 +58,14 @@ export default function Home() {
   function openView(nextView: View) {
     setView(nextView);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function toggleQuestion(questionId: string) {
+    setSelectedQuestions((current) =>
+      current.includes(questionId)
+        ? current.filter((id) => id !== questionId)
+        : [...current, questionId],
+    );
   }
 
   return (
@@ -94,6 +111,8 @@ export default function Home() {
           setTeacherAction={setTeacherAction}
           miniCount={miniCount}
           setMiniCount={setMiniCount}
+          selectedQuestions={selectedQuestions}
+          toggleQuestion={toggleQuestion}
           openView={openView}
         />
       )}
@@ -200,11 +219,11 @@ function StudentView({
       {step === 1 && (
         <section className="activity-card">
           <CardHeading eyebrow="ENTRY TICKET · 20–30 GIÂY" title="Em bước vào buổi học với trạng thái nào?" />
-          <label>Mức sẵn sàng của em</label>
+          <p className="field-label">Mức sẵn sàng của em</p>
           <div className="scale-row">
             {[1, 2, 3, 4, 5].map((score) => <button key={score} className={score === 4 ? "selected" : ""}>{score}<small>{score === 1 ? "Đuối" : score === 5 ? "Rất sẵn sàng" : ""}</small></button>)}
           </div>
-          <label>Điều em muốn làm rõ nhất hôm nay</label>
+          <p className="field-label">Điều em muốn làm rõ nhất hôm nay</p>
           <div className="chip-row"><button className="choice selected">FALSE khác NOT GIVEN thế nào?</button><button className="choice">Tốc độ tìm bằng chứng</button><button className="choice">Chưa rõ</button></div>
           <NavActions back={() => moveStep(0)} next={() => moveStep(2)} nextLabel="Lưu và vào bài học →" />
         </section>
@@ -215,7 +234,7 @@ function StudentView({
           <CardHeading eyebrow="MINI-REFLECTION 1 · 30–45 GIÂY" title="Ngay sau bài True / False / Not Given" />
           <label htmlFor="result">Em làm đúng bao nhiêu câu?</label>
           <div className="score-row"><input id="result" defaultValue="7" aria-label="Số câu đúng" /><span>/ 10 câu</span></div>
-          <label>Điểm em còn vướng nhất</label>
+          <p className="field-label">Điểm em còn vướng nhất</p>
           <div className="chip-row"><button className="choice selected">Phân biệt FALSE và NOT GIVEN</button><button className="choice">Tìm vị trí bằng chứng</button><button className="choice">Không có vướng mắc</button></div>
           <label htmlFor="evidence">Ghi lại một dấu hiệu em vừa nhận ra</label>
           <textarea id="evidence" defaultValue="FALSE có bằng chứng ngược lại; NOT GIVEN là bài không cho đủ thông tin để kết luận." />
@@ -226,7 +245,7 @@ function StudentView({
       {step === 3 && (
         <section className="activity-card">
           <CardHeading eyebrow="MINI-REFLECTION 2 · 30–45 GIÂY" title="Ngay sau phần chữa và làm lại" />
-          <label>Khi làm lại 3 câu sai, em đã làm được gì?</label>
+          <p className="field-label">Khi làm lại 3 câu sai, em đã làm được gì?</p>
           <div className="check-list">
             <button className="checked"><span>✓</span>Tìm được câu chứa bằng chứng</button>
             <button className="checked"><span>✓</span>Gạch chân từ khóa phủ định</button>
@@ -274,20 +293,22 @@ function StudentView({
   );
 }
 
-function TeacherView({ panel, setPanel, teacherAction, setTeacherAction, miniCount, setMiniCount, openView }: {
+function TeacherView({ panel, setPanel, teacherAction, setTeacherAction, miniCount, setMiniCount, selectedQuestions, toggleQuestion, openView }: {
   panel: TeacherPanel;
   setPanel: (panel: TeacherPanel) => void;
   teacherAction: string | null;
   setTeacherAction: (action: string) => void;
   miniCount: number;
   setMiniCount: (count: number) => void;
+  selectedQuestions: string[];
+  toggleQuestion: (questionId: string) => void;
   openView: (view: View) => void;
 }) {
   return (
     <>
       <section className="teacher-hero">
         <div><p className="eyebrow light">CỔNG GIẢNG VIÊN · IC2252</p><h2>Tự do thiết kế, ít thao tác, kiểm soát sâu hơn</h2><p>Hệ thống gom tín hiệu để giảng viên tập trung vào trường hợp cần quyết định — không đọc lại từng dòng của cả lớp.</p></div>
-        <div className="hero-actions"><button onClick={() => setPanel("class")} className={panel === "class" ? "active" : ""}>Theo dõi lớp</button><button onClick={() => setPanel("builder")} className={panel === "builder" ? "active" : ""}>Soạn phiếu buổi 10</button></div>
+        <div className="hero-actions"><button onClick={() => setPanel("class")} className={panel === "class" ? "active" : ""}>Theo dõi lớp</button><button onClick={() => setPanel("builder")} className={panel === "builder" ? "active" : ""}>Chọn câu hỏi buổi 10</button></div>
       </section>
 
       {panel === "class" && (
@@ -314,7 +335,7 @@ function TeacherView({ panel, setPanel, teacherAction, setTeacherAction, miniCou
               <p className="eyebrow red">MAI ANH · BẰNG CHỨNG ĐƯỢC GOM SẴN</p>
               <h3>Một vấn đề, ba nguồn khớp nhau</h3>
               <ul><li><span>Trên lớp</span><strong>7/10 · vướng FALSE/NG</strong></li><li><span>BTVN gần nhất</span><strong>6/10 · cùng loại lỗi</strong></li><li><span>Lịch sử</span><strong>Lặp 3 lần / 4 buổi</strong></li></ul>
-              <label>Chọn một phản hồi nhanh</label>
+              <p className="field-label">Chọn một phản hồi nhanh</p>
               <div className="quick-actions">
                 {["Đã xem", "Nhắc lại đầu buổi sau", "Gửi 3 câu bổ trợ", "Trao đổi riêng 2 phút"].map((action) => <button className={teacherAction === action ? "selected" : ""} key={action} onClick={() => setTeacherAction(action)}>{teacherAction === action ? "✓ " : ""}{action}</button>)}
               </div>
@@ -331,24 +352,35 @@ function TeacherView({ panel, setPanel, teacherAction, setTeacherAction, miniCou
       {panel === "builder" && (
         <section className="builder-layout">
           <div className="builder-card">
-            <div className="section-heading"><div><p className="eyebrow red">TẠO PHIẾU TRONG ≤ 2 PHÚT</p><h3>Buổi 10 · Reading Matching Headings</h3></div><span className="draft-pill">Bản nháp tự lưu</span></div>
-            <div className="locked-core"><span>KHUNG CHUNG ĐÃ KHÓA</span><p>Entry Ticket · các mini-reflection · Exit Ticket · điều kiện hoàn thành · trường dữ liệu cốt lõi</p></div>
-            <label>Số điểm dừng mini-reflection</label>
+            <div className="section-heading"><div><p className="eyebrow red">CHỌN CÂU HỎI TRONG ≤ 2 PHÚT</p><h3>Buổi 10 · Reading Matching Headings</h3></div><span className="draft-pill">Lấy sẵn từ lịch lớp</span></div>
+            <div className="locked-core"><span>BASELINE CHỈ GỒM REFLECTION</span><p>Không nhúng bài tập hoặc handout chuyên môn. Phiếu chỉ hỏi điều máy chưa biết: kết quả tự ghi nhận, khó khăn, bằng chứng và câu hỏi của học viên.</p></div>
+            <p className="field-label">Số điểm dừng mini-reflection</p>
             <div className="count-selector">{[1, 2, 3].map((count) => <button key={count} onClick={() => setMiniCount(count)} className={miniCount === count ? "selected" : ""}>{count}<small>{count === 2 ? "Khuyên dùng" : count === 1 ? "Buổi ngắn" : "Buổi nhiều phần"}</small></button>)}</div>
-            <label>Nội dung chính của từng phần</label>
-            <div className="prompt-list">
-              {Array.from({ length: miniCount }, (_, index) => <div key={index}><span>{index + 1}</span><input defaultValue={index === 0 ? "Làm bài Matching Headings · 8 câu" : index === 1 ? "Chữa bài và rút chiến lược" : "Luyện lại theo cặp"} /><button>⋯</button></div>)}
+            <div className="library-heading">
+              <div><p className="field-label">Thư viện câu hỏi reflection phù hợp</p><p>Chọn câu cần dùng; không phải tự xây phiếu từ đầu.</p></div>
+              <strong>{selectedQuestions.length} câu đã chọn</strong>
             </div>
-            <label>Câu hỏi tùy biến của giảng viên</label>
-            <textarea defaultValue="Em đúng mấy câu? Dấu hiệu nào khiến em chọn heading đó? Em còn vướng bước nào?" />
+            <div className="question-library">
+              {reflectionLibrary.map((item) => {
+                const selected = selectedQuestions.includes(item.id);
+                return (
+                  <button key={item.id} className={selected ? "selected" : ""} onClick={() => toggleQuestion(item.id)} aria-pressed={selected}>
+                    <span className="question-check">{selected ? "✓" : "+"}</span>
+                    <span className="question-copy"><small>{item.stage} · {item.format}</small><strong>{item.question}</strong></span>
+                  </button>
+                );
+              })}
+            </div>
+            <label htmlFor="custom-reflection">Một câu reflection riêng, nếu thư viện chưa đủ <span className="optional-label">Không bắt buộc</span></label>
+            <textarea id="custom-reflection" placeholder="Ví dụ: Chiến lược nào em muốn thử lại ở bài tiếp theo?" />
             <div className="actions"><button className="secondary">Xem trước như học viên</button><button className="primary">Tạo link buổi 10 →</button></div>
           </div>
           <aside className="freedom-card">
-            <p className="eyebrow">TỰ DO TRONG HÀNG RÀO</p><h3>Giảng viên được đổi</h3>
-            <ul className="yes-list"><li>Có 1–3 mini-reflection</li><li>Câu hỏi và dạng trả lời</li><li>Nội dung từng hoạt động</li><li>Handout/chấm tự động nâng cao</li></ul>
+            <p className="eyebrow">TỰ DO CÓ HƯỚNG DẪN</p><h3>Giảng viên được đổi</h3>
+            <ul className="yes-list"><li>Có 1–3 điểm dừng reflection</li><li>Bật/tắt câu hỏi trong thư viện</li><li>Thêm tối đa một câu riêng</li><li>Chọn thời điểm học viên điền</li></ul>
             <h3>Hệ thống giữ cố định</h3>
-            <ul className="lock-list"><li>Trường dữ liệu tối thiểu</li><li>Điều kiện xác nhận tham gia</li><li>Cấu trúc báo cáo chung</li><li>Quy tắc riêng tư và bằng chứng</li></ul>
-            <p className="effort-note">Mặc định 2 điểm dừng. Chỉ dùng 3 khi buổi học có ba phần thực sự tách biệt; tổng thời gian của học viên vẫn không vượt 3 phút.</p>
+            <ul className="lock-list"><li>Chỉ thu nội dung reflection</li><li>Trường dữ liệu tối thiểu</li><li>Điều kiện xác nhận tham gia</li><li>Quy tắc riêng tư và bằng chứng</li></ul>
+            <p className="effort-note"><strong>Phục vụ 90% trước:</strong> dùng mẫu và thư viện làm mặc định; yêu cầu mới được ghi nhận để team bổ sung có chọn lọc sau pilot. Một link dùng cả buổi, học viên chỉ nộp một lần cuối giờ.</p>
           </aside>
         </section>
       )}

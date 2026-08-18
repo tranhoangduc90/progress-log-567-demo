@@ -38,5 +38,11 @@ test("keeps the agreed product guardrails in source", async () => {
   assert.match(page, /Không giả giọng quan tâm của giáo viên/);
   assert.match(page, /Array\.from\(\{ length: 30 \}/);
   assert.match(page, /miniCount/);
+  assert.match(page, /Thư viện câu hỏi reflection phù hợp/);
+  assert.match(page, /BASELINE CHỈ GỒM REFLECTION/);
+  assert.match(page, /Một link dùng cả buổi, học viên chỉ nộp một lần cuối giờ/);
+  assert.doesNotMatch(page, /Nội dung chính của từng phần/);
+  assert.doesNotMatch(page, /Câu hỏi tùy biến của giảng viên/);
+  assert.doesNotMatch(page, /Handout\/chấm tự động nâng cao/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 });

@@ -4,13 +4,14 @@ Bản minh họa tương tác cho cuộc thi Progress Log. Toàn bộ tên, lớ
 
 ## Người xem có thể thử
 
-- Học viên: mở một link, Entry Ticket, hai mini-reflection, Exit Ticket, xác nhận tham gia và tóm tắt sau buổi.
-- Giảng viên: xem ngoại lệ của lớp, chọn hành động thật và tạo phiếu với 1–3 mini-reflection.
+- Học viên: mở một link, điền reflection ở các điểm dừng do giảng viên chọn, nộp một lần cuối giờ, xác nhận tham gia và đọc tóm tắt sau buổi.
+- Giảng viên: xem ngoại lệ của lớp, chọn hành động thật và chọn câu reflection từ thư viện phù hợp trong tối đa hai phút.
 - Toàn khóa: xem bản đồ 30 buổi, kỹ năng, BTVN và lỗi sai theo thời gian.
 
 ## Giới hạn có chủ ý
 
 - Không kết nối portal điểm danh, database, BTVN hoặc bài test thật.
+- Phiếu baseline chỉ chứa câu hỏi reflection; không nhúng bài tập hoặc handout chuyên môn.
 - Không lưu dữ liệu sau khi tải lại trang.
 - Không dùng dữ liệu định danh học viên.
 - Trường hợp nộp thiếu chỉ chuyển sang “Cần giảng viên xác nhận”, không tự đánh vắng.
