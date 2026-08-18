@@ -37,15 +37,12 @@ export default function Home() {
   const [incompleteDemo, setIncompleteDemo] = useState(false);
   const [teacherPanel, setTeacherPanel] = useState<TeacherPanel>("class");
   const [teacherAction, setTeacherAction] = useState<string | null>(null);
+  const [teacherPersonalNote, setTeacherPersonalNote] = useState("Cô đã đọc rồi nhé. Buổi sau mình gỡ đúng chỗ này cùng nhau.");
   const [miniCount, setMiniCount] = useState(2);
   const [selectedQuestions, setSelectedQuestions] = useState(["result", "difficulty", "evidence", "repair"]);
   const [showSourceNote, setShowSourceNote] = useState(false);
 
   const attendanceStatus = incompleteDemo ? "Cần giảng viên xác nhận" : "Đã xác nhận tham gia";
-  const summaryNote = teacherAction
-    ? `Cô Lan đã xem và chọn: “${teacherAction}”.`
-    : "Nội dung của em đã được đưa vào bảng theo dõi của giảng viên.";
-
   const progressPercent = useMemo(
     () => Math.min(100, Math.round((studentStep / (STEP_LABELS.length - 1)) * 100)),
     [studentStep],
@@ -98,7 +95,7 @@ export default function Home() {
           incompleteDemo={incompleteDemo}
           setIncompleteDemo={setIncompleteDemo}
           attendanceStatus={attendanceStatus}
-          summaryNote={summaryNote}
+          teacherPersonalNote={teacherPersonalNote}
           openView={openView}
         />
       )}
@@ -109,6 +106,8 @@ export default function Home() {
           setPanel={setTeacherPanel}
           teacherAction={teacherAction}
           setTeacherAction={setTeacherAction}
+          teacherPersonalNote={teacherPersonalNote}
+          setTeacherPersonalNote={setTeacherPersonalNote}
           miniCount={miniCount}
           setMiniCount={setMiniCount}
           selectedQuestions={selectedQuestions}
@@ -147,7 +146,7 @@ function StudentView({
   incompleteDemo,
   setIncompleteDemo,
   attendanceStatus,
-  summaryNote,
+  teacherPersonalNote,
   openView,
 }: {
   step: number;
@@ -158,7 +157,7 @@ function StudentView({
   incompleteDemo: boolean;
   setIncompleteDemo: (value: boolean) => void;
   attendanceStatus: string;
-  summaryNote: string;
+  teacherPersonalNote: string;
   openView: (view: View) => void;
 }) {
   return (
@@ -276,16 +275,16 @@ function StudentView({
         <section className="summary-layout">
           <div className="summary-card">
             <div className={`attendance-seal ${incompleteDemo ? "pending" : ""}`}><span>{incompleteDemo ? "!" : "✓"}</span><div><small>TRẠNG THÁI BUỔI 9</small><strong>{attendanceStatus}</strong></div></div>
-            <p className="eyebrow red">TÓM TẮT SAU BUỔI HỌC · {selectedStudent.toUpperCase()}</p>
-            <h3>Một lời nhắc ngắn, có bằng chứng, có việc tiếp theo</h3>
-            <blockquote>Hôm nay em hoàn thành <strong>7/10 câu</strong> True / False / Not Given và chủ động gọi đúng tên vấn đề mình còn vướng. Đây là tín hiệu tốt: em đã chuyển từ “sai nhưng chưa rõ vì sao” sang phân biệt được hai loại lỗi. Ưu tiên duy nhất là kiểm tra xem bài phủ định thông tin hay chỉ không nhắc tới. <strong>Việc tiếp theo: làm lại 3 câu sai và ghi một dòng bằng chứng cho mỗi câu.</strong></blockquote>
-            <div className="teacher-touch"><span>GV</span><p>{summaryNote}</p></div>
+            <p className="eyebrow red">PHÂN TÍCH TỪ HỆ THỐNG · {selectedStudent.toUpperCase()}</p>
+            <h3>Một ưu tiên, một việc tiếp theo — không giả giọng giảng viên</h3>
+            <blockquote>Em hoàn thành <strong>7/10 câu</strong> True / False / Not Given và xác định điểm vướng là phân biệt FALSE với NOT GIVEN. Dữ liệu sau phần chữa cho thấy em đã nêu được: FALSE có bằng chứng ngược lại, còn NOT GIVEN là thiếu thông tin để kết luận. Ưu tiên tiếp theo là kiểm tra bài phủ định thông tin hay chỉ không nhắc tới. <strong>Việc cần làm: làm lại 3 câu sai và ghi một dòng bằng chứng cho mỗi câu.</strong></blockquote>
+            <div className={`teacher-touch ${teacherPersonalNote.trim() ? "" : "empty"}`}><span>GV</span><div><small>TIN NHẮN CỦA CÔ LAN · VIẾT TRỰC TIẾP</small><p>{teacherPersonalNote.trim() || "Giảng viên chưa thêm lời nhắn cá nhân."}</p></div></div>
             <div className="summary-actions"><button className="primary" onClick={() => openView("progress")}>Xem tiến bộ toàn khóa</button><button className="secondary" onClick={() => moveStep(0)}>Chạy lại demo</button></div>
           </div>
           <aside className="summary-logic">
-            <p className="eyebrow">CẤU TRÚC 60–90 TỪ</p>
-            <ol><li><span>1</span>Một kết quả có số liệu</li><li><span>2</span>Một lời ghi nhận có bằng chứng</li><li><span>3</span>Tối đa một ưu tiên</li><li><span>4</span>Đúng một hành động tiếp theo</li></ol>
-            <p className="guardrail">Không giả giọng quan tâm của giáo viên. Chỉ hiện lời xác nhận cá nhân khi giáo viên thực sự bấm “đã xem”.</p>
+            <p className="eyebrow">MÔ HÌNH HAI LỚP</p>
+            <ol><li><span>1</span>Hệ thống: dữ liệu và bằng chứng</li><li><span>2</span>Hệ thống: một ưu tiên</li><li><span>3</span>Hệ thống: một việc tiếp theo</li><li><span>4</span>Giảng viên: một câu thật, 5–20 từ</li></ol>
+            <p className="guardrail">Gắn nhãn rõ nguồn. Không biến phần phân tích của AI thành lời của giảng viên.</p>
           </aside>
         </section>
       )}
@@ -293,11 +292,13 @@ function StudentView({
   );
 }
 
-function TeacherView({ panel, setPanel, teacherAction, setTeacherAction, miniCount, setMiniCount, selectedQuestions, toggleQuestion, openView }: {
+function TeacherView({ panel, setPanel, teacherAction, setTeacherAction, teacherPersonalNote, setTeacherPersonalNote, miniCount, setMiniCount, selectedQuestions, toggleQuestion, openView }: {
   panel: TeacherPanel;
   setPanel: (panel: TeacherPanel) => void;
   teacherAction: string | null;
   setTeacherAction: (action: string) => void;
+  teacherPersonalNote: string;
+  setTeacherPersonalNote: (note: string) => void;
   miniCount: number;
   setMiniCount: (count: number) => void;
   selectedQuestions: string[];
@@ -335,11 +336,14 @@ function TeacherView({ panel, setPanel, teacherAction, setTeacherAction, miniCou
               <p className="eyebrow red">MAI ANH · BẰNG CHỨNG ĐƯỢC GOM SẴN</p>
               <h3>Một vấn đề, ba nguồn khớp nhau</h3>
               <ul><li><span>Trên lớp</span><strong>7/10 · vướng FALSE/NG</strong></li><li><span>BTVN gần nhất</span><strong>6/10 · cùng loại lỗi</strong></li><li><span>Lịch sử</span><strong>Lặp 3 lần / 4 buổi</strong></li></ul>
-              <p className="field-label">Chọn một phản hồi nhanh</p>
+              <p className="field-label">Chọn việc giảng viên sẽ làm</p>
               <div className="quick-actions">
                 {["Đã xem", "Nhắc lại đầu buổi sau", "Gửi 3 câu bổ trợ", "Trao đổi riêng 2 phút"].map((action) => <button className={teacherAction === action ? "selected" : ""} key={action} onClick={() => setTeacherAction(action)}>{teacherAction === action ? "✓ " : ""}{action}</button>)}
               </div>
-              {teacherAction && <div className="action-confirmed">Đã cập nhật vào lời nhắn của học viên — thao tác thật của giảng viên, không phải AI tự nhận.</div>}
+              {teacherAction && <div className="action-confirmed">Quyết định đã được lưu vào hồ sơ. Hệ thống không biến quyết định này thành lời nói của giảng viên.</div>}
+              <label htmlFor="teacher-personal-note">Câu chung của lớp hoặc sửa riêng cho Mai Anh <span className="optional-label">5–20 từ</span></label>
+              <textarea id="teacher-personal-note" className="human-note-input" value={teacherPersonalNote} onChange={(event) => setTeacherPersonalNote(event.target.value)} maxLength={140} />
+              <div className="human-note-status"><span>{teacherPersonalNote.trim() ? teacherPersonalNote.trim().split(/\s+/).length : 0} từ</span><small>Gõ một câu chung cho lớp; chỉ sửa riêng các trường hợp cần chú ý. AI không viết lại.</small></div>
             </aside>
           </section>
           <section className="source-flow">

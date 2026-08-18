@@ -35,7 +35,10 @@ test("keeps the agreed product guardrails in source", async () => {
 
   assert.match(page, /Cần giảng viên xác nhận/);
   assert.match(page, /Không tự đánh vắng/);
-  assert.match(page, /Không giả giọng quan tâm của giáo viên/);
+  assert.match(page, /PHÂN TÍCH TỪ HỆ THỐNG/);
+  assert.match(page, /TIN NHẮN CỦA CÔ LAN · VIẾT TRỰC TIẾP/);
+  assert.match(page, /Không biến phần phân tích của AI thành lời của giảng viên/);
+  assert.match(page, /một câu thật, 5–20 từ/);
   assert.match(page, /Array\.from\(\{ length: 30 \}/);
   assert.match(page, /miniCount/);
   assert.match(page, /Thư viện câu hỏi reflection phù hợp/);

@@ -116,9 +116,11 @@ textarea { width: 100%; min-height: 74px; padding: 12px 13px; resize: vertical; 
 .attendance-seal small { color: var(--muted); font-size: 9px; letter-spacing: .08em; font-weight: 800; }
 .attendance-seal strong { color: var(--navy); margin-top: 1px; }
 .summary-card blockquote { margin: 0; border-left: 4px solid var(--red); background: #fbfaf7; padding: 18px 20px; border-radius: 0 14px 14px 0; line-height: 1.7; color: #344551; }
-.teacher-touch { display: flex; gap: 10px; align-items: center; margin-top: 15px; padding: 13px; background: #eef4f7; border-radius: 13px; }
+.teacher-touch { display: flex; gap: 10px; align-items: center; margin-top: 15px; padding: 13px; background: var(--green-soft); border: 1px solid #b8decf; border-radius: 13px; }
+.teacher-touch.empty { background: #f2f5f7; border-color: var(--line); }
 .teacher-touch span { width: 34px; height: 34px; display: grid; place-items: center; background: var(--navy); color: white; border-radius: 50%; font-size: 11px; font-weight: 850; }
-.teacher-touch p { margin: 0; color: #425969; font-size: 13px; }
+.teacher-touch small { display: block; color: var(--green); font-size: 9px; font-weight: 850; letter-spacing: .05em; margin-bottom: 3px; }
+.teacher-touch p { margin: 0; color: #314e45; font-size: 13px; }
 .summary-actions { display: flex; gap: 9px; margin-top: 18px; }
 .summary-logic { background: var(--navy); color: white; padding: 25px; border-radius: 24px; }
 .summary-logic .eyebrow { color: #b9cbd7; }
@@ -161,6 +163,10 @@ textarea { width: 100%; min-height: 74px; padding: 12px 13px; resize: vertical; 
 .quick-actions button { text-align: left; border: 1px solid var(--line); background: white; color: var(--navy); padding: 9px; border-radius: 10px; font-size: 11px; }
 .quick-actions button.selected { background: var(--navy); border-color: var(--navy); color: white; }
 .action-confirmed { margin-top: 11px; padding: 10px; background: var(--green-soft); color: #306957; border-radius: 10px; font-size: 11px; line-height: 1.45; }
+.human-note-input { min-height: 66px; font-size: 12px; line-height: 1.45; }
+.human-note-status { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 6px; color: #607886; }
+.human-note-status span { color: var(--green); font-size: 10px; font-weight: 850; white-space: nowrap; }
+.human-note-status small { font-size: 9px; line-height: 1.35; text-align: right; }
 .source-flow { margin-top: 16px; padding: 23px 26px; background: white; border: 1px solid var(--line); border-radius: 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .source-flow h3 { margin: 5px 0 0; color: var(--navy); }
 .flow-items { display: flex; align-items: center; gap: 8px; }

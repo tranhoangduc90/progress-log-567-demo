@@ -6,6 +6,7 @@ Bản minh họa tương tác cho cuộc thi Progress Log. Toàn bộ tên, lớ
 
 - Học viên: mở một link, điền reflection ở các điểm dừng do giảng viên chọn, nộp một lần cuối giờ, xác nhận tham gia và đọc tóm tắt sau buổi.
 - Giảng viên: xem ngoại lệ của lớp, chọn hành động thật và chọn câu reflection từ thư viện phù hợp trong tối đa hai phút.
+- Thông điệp sau buổi: phần phân tích 60–90 từ luôn ghi rõ là của hệ thống; giảng viên gõ một câu 5–20 từ cho lớp và chỉ sửa riêng các trường hợp cần chú ý.
 - Toàn khóa: xem bản đồ 30 buổi, kỹ năng, BTVN và lỗi sai theo thời gian.
 
 ## Giới hạn có chủ ý
@@ -15,6 +16,7 @@ Bản minh họa tương tác cho cuộc thi Progress Log. Toàn bộ tên, lớ
 - Không lưu dữ liệu sau khi tải lại trang.
 - Không dùng dữ liệu định danh học viên.
 - Trường hợp nộp thiếu chỉ chuyển sang “Cần giảng viên xác nhận”, không tự đánh vắng.
+- Không gắn phần phân tích do AI tạo thành lời của giảng viên.
 
 ## Chạy và kiểm tra
 
