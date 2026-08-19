@@ -1,28 +1,24 @@
 # Progress Log 567 · Demo
 
-Bản minh họa tương tác cho cuộc thi Progress Log. Toàn bộ tên, lớp, điểm số và lịch sử trong demo là dữ liệu giả.
+Bản demo tương tác cho cuộc thi Progress Log. Toàn bộ tên, lớp, điểm số và lịch sử đều là dữ liệu giả.
 
-## Người xem có thể thử
+## Hai trải nghiệm được minh họa
 
-- Học viên: mở một link, điền reflection ở các điểm dừng do giảng viên chọn, nộp một lần cuối giờ, xác nhận tham gia và đọc tóm tắt sau buổi.
-- Giảng viên: xem ngoại lệ của lớp, chọn hành động thật và chọn câu reflection từ thư viện phù hợp trong tối đa hai phút.
-- Thông điệp sau buổi: phần phân tích 60–90 từ luôn ghi rõ là của hệ thống; giảng viên gõ một câu 5–20 từ cho lớp và chỉ sửa riêng các trường hợp cần chú ý.
-- Toàn khóa: xem bản đồ 30 buổi, kỹ năng, BTVN và lỗi sai theo thời gian.
+- Học viên mở một link, điền hai điểm dừng do giảng viên mở vào thời điểm phù hợp, nộp một lần và nhận ngay xác nhận tham gia cùng việc tiếp theo.
+- Giảng viên chọn 1–3 điểm dừng, quyết định thời điểm mở, lấy câu hỏi từ thư viện và chỉ xử lý các ngoại lệ sau buổi học.
+- Phân tích của hệ thống luôn có nhãn riêng; giảng viên tự viết một câu ngắn bằng giọng thật và AI không viết lại.
 
 ## Giới hạn có chủ ý
 
 - Không kết nối portal điểm danh, database, BTVN hoặc bài test thật.
-- Phiếu baseline chỉ chứa câu hỏi reflection; không nhúng bài tập hoặc handout chuyên môn.
-- Không lưu dữ liệu sau khi tải lại trang.
-- Không dùng dữ liệu định danh học viên.
-- Trường hợp nộp thiếu chỉ chuyển sang “Cần giảng viên xác nhận”, không tự đánh vắng.
-- Không gắn phần phân tích do AI tạo thành lời của giảng viên.
+- Không lưu dữ liệu sau khi tải lại trang và không gửi dữ liệu ra ngoài.
+- Phiếu baseline chỉ chứa câu hỏi reflection, không nhúng bài tập hoặc handout.
+- Nộp thiếu chuyển sang giảng viên xác nhận; hệ thống không tự đánh vắng.
 
-## Chạy và kiểm tra
+## Kiểm tra
 
-- `npm run dev`: mở bản demo cục bộ.
-- `npm run build`: kiểm tra bản dựng.
+- `npm run dev`: chạy bản demo cục bộ.
+- `npm run build`: kiểm tra bản dựng server.
+- `npm run build:pages`: tạo bản tĩnh cho GitHub Pages.
 - `npm run lint`: kiểm tra mã nguồn.
-- `npm test`: dựng ứng dụng và xác nhận các nguyên tắc sản phẩm cốt lõi vẫn có trong bản phát hành.
-
-Ứng dụng nhận dữ liệu giả được viết sẵn trong trang, xử lý hoàn toàn trên trình duyệt và chỉ thay đổi màn hình người xem. Nếu có lỗi dựng, người dùng sẽ không mở được trang; lệnh kiểm tra trả về thông báo lỗi thay vì ghi dữ liệu ra hệ thống bên ngoài.
+- `npm test`: xác nhận các nguyên tắc sản phẩm cốt lõi.

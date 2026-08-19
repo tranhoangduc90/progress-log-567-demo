@@ -10,6 +10,7 @@ const geist = Geist({
 export const metadata: Metadata = {
   title: "Progress Log 567 · Demo",
   description: "Prototype phiếu học tập và xác nhận tham gia cho khóa IELTS 5–6 và 6–7.",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({
